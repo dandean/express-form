@@ -2,10 +2,21 @@ var assert = require("assert"),
     validation = require("../index"),
     validationMiddleware = validation({
       "age": {
-        filter: ["trim", "toInt"]
+        filter: ["trim", "toInt"],
+        validate: "isInt"
+      },
+      "birthyear": {
+        filter: "toInt"
+      },
+      "graduationyear": {
+        filter: "toInt",
+        validate: ["isInt", "len(4,4)", "isLowercase"]
       },
       "username": {
-        filter: ["ltrim('d ')", function(value) { return value.toUpperCase(); }]
+        filter: [
+          "ltrim('d ')",
+          function(value) { return value.toUpperCase(); }
+        ]
       }
     });
 
@@ -15,6 +26,8 @@ module.exports = {
     var request = {
       body: {
         age: "   5000  ",
+        birthyear: "1978",
+        graduationyear: "2003",
         username: "  dandean"
       }
     };
@@ -26,8 +39,6 @@ module.exports = {
     assert.ok(typeof request.body.age == 'number', "Should have converted `age` to an Int");
     assert.equal(5000, request.body.age);
     assert.equal('ANDEAN', request.body.username);
-    
-    console.log(request.body);
   },
   
   '1. configuration': function() {
