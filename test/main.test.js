@@ -1,16 +1,19 @@
 var assert = require("assert"),
     validation = require("../index"),
+    f = validation.filter,
+    v = validation.validator,
     validationMiddleware = validation({
       "age": {
         filter: ["trim", "toInt"],
         validate: "isInt"
       },
       "birthyear": {
-        filter: "toInt"
+        filter: "toInt",
+        validate: "required -> birthyear is a required field"
       },
       "graduationyear": {
         filter: "toInt",
-        validate: ["isInt", "len(4,4)", "isLowercase"]
+        validate: ["required", "isInt", "len(4,4)", "isLowercase"]
       },
       "username": {
         filter: [
@@ -18,7 +21,31 @@ var assert = require("assert"),
           function(value) { return value.toUpperCase(); }
         ]
       }
-    });
+//    }),
+//    validationMiddleware2 = validation({
+//      "age": {
+//        filter: f.trim().toInt(),
+//        validate: v.isInt("Age must be an integer")
+//      },
+//      "birthyear": {
+//        filter: f.toInt(),
+//        validate: v.required("birthyear is a required field")
+//      },
+//      "graduationyear": {
+//        filter: f.toInt(),
+//        validate: v.required("%s is a required field")
+//                   .isInt("%s must be in integer")
+//                   .len(4,4, "%s must be four digits long")
+//                   .isLowercase("%s must use lowercase letters")
+//      },
+//      "username": {
+//        filter: f.ltrim('d ')
+//                 .custom(function(value) {
+//                   return value.toUpperCase();
+//                 })
+//      }
+    })
+    ;
 
 module.exports = {
 
@@ -26,7 +53,7 @@ module.exports = {
     var request = {
       body: {
         age: "   5000  ",
-        birthyear: "1978",
+//        birthyear: "1978",
         graduationyear: "2003",
         username: "  dandean"
       }
