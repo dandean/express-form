@@ -1,10 +1,16 @@
 var assert = require("assert"),
     form = require("../index"),
     filter = form.filter,
+    validate = form.validator,
     validationMiddleware = form(
       filter("title").entityEncode(),
+
       filter("age").entityDecode().trim().toInt(),
+      validate("age").isInt("%s !!!"),
+
       filter("birthyear").toInt(),
+      validate("birthyear", "Birth Year").required("hi", "%s is a required field"),
+
       filter("graduationyear").toInt(),
       filter("username").ltrim("d "),
       filter("exclamations").custom(function() { return "!!!"; })
