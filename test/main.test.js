@@ -317,7 +317,128 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validate : equals': function() {
+    // Failure.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").equals("other"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Not equal");
 
+    // Failure w/ custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").equals("other", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").equals("value"));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
+  'validate : contains': function() {
+    // Failure.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").contains("other"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").contains("other", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").contains("alu"));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
+  'validate : notContains': function() {
+    // Failure.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notContains("alu"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notContains("alu", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notContains("win"));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
+  'validate : regex/is': function() {
+    // regex(/pattern/)
+    // regex(/pattern/, "message")
+    // regex("pattern")
+    // regex("pattern", "modifiers")
+    // regex("pattern", "message")
+    // regex("pattern", "modifiers", "message")
+
+    // Failure: RegExp with default args
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex(/^\d+$/));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure: RegExp with custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex(/^\d+$/, "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Failure: String with default args.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex("^\d+$"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Success: String with modifiers
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex("^VALUE$", "i"));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+
+    // Failure: String with custom message
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex("^\d+$", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Failure: String with modifiers and custom message
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex("^\d+$", "i", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").regex(/^value$/));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
 
 
 
