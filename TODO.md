@@ -1,16 +1,33 @@
 TODO
 ================================================================================
 
-* Custom validation messages (with formatting)
-* Unit Tests
+
+Features
+--------
+
 * Custom validators
 * Filter and Validator extensions
-* test speed impact of `process.compile`
+* minLength and maxLength validators
+* form.isValid
+
+
+Testing and Compatibility
+-------------------------
+
+* Test with Connect and Express
+* Formidable and Connect-Form
+* express-contrib/flash
+* auto-locals
+
+
+Packaging
+---------
+
 * Add package.json
-* Test with Connect
-* Test with Express
-* Compatibility: Formidable and Connect-Form
-* Compatibility: express-contrib/flash
-* Compatibility: locals
+* Include expresson and node-validator as internal packages, not external deps
+
+
+Other
+-----
 
 * fix object.isUndefined to also just compare to undefined
