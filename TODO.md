@@ -12,3 +12,5 @@ TODO
 * Compatibility: Formidable and Connect-Form
 * Compatibility: express-contrib/flash
 * Compatibility: locals
+
+* fix object.isUndefined to also just compare to undefined
