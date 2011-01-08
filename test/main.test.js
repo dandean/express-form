@@ -489,15 +489,12 @@ module.exports = {
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
-
     // Success
     var request = { body: { field: "value" }};
     var formValidator = form(validate("field").notRegex(/^win$/));
     formValidator(request, {});
     assert.equal(request.form.errors, undefined);
   },
-
-
 
   'validation : required': function() {
     // Failure
