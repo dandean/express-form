@@ -293,6 +293,29 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validate : notEmpty': function() {
+    // Failure.
+    var request = { body: { field: "  \t" }};
+    var formValidator = form(validate("field").notEmpty());
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "  \t" }};
+    var formValidator = form(validate("field").notEmpty("!!! %s !!!"));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "" }};
+    var formValidator = form(validate("field").notEmpty());
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
 
 
 
