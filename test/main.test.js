@@ -341,20 +341,6 @@ module.exports = {
     var formValidator = form(validate("a_number").required("a_value", "!!! %s !!!"));
     formValidator(request, {});
     assert.equal(request.form.errors, undefined);
-  },
-
-  '1. configuration': function() {
-  },
-  
-  '2. list users': function() {
-  },
-  
-  '3. create user': function() {
-  },
-  
-  '4. get user': function() {
-  },
-  
-  '5. modify user': function() {
   }
+
 };
