@@ -496,6 +496,33 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validate : length/len': function() {
+    // length(5);
+    // length(5, "Too short");
+    // length(5, 5);
+    // length(5, 5, "Too short");
+    
+    // Failure.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").length(6));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Value is too short");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").length(6, "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").length(5));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
   'validation : required': function() {
     // Failure
     var request = { body: {}};
