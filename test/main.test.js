@@ -440,6 +440,63 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validate : notRegex/not': function() {
+    // notRegex(/pattern/)
+    // notRegex(/pattern/, "message")
+    // notRegex("pattern")
+    // notRegex("pattern", "modifiers")
+    // notRegex("pattern", "message")
+    // notRegex("pattern", "modifiers", "message")
+
+    // Failure: RegExp with default args
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex(/^value$/));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure: RegExp with custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex(/^value$/, "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Failure: String with default args.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex("^value$"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Success: String with modifiers
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex("^win$", "i"));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+
+    // Failure: String with custom message
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex("^value$", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Failure: String with modifiers and custom message
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex("^value$", "i", "!!! %s !!!"));
+    formValidator(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").notRegex(/^win$/));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
 
 
   'validation : required': function() {
