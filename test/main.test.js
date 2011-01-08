@@ -245,6 +245,54 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validate : notNull': function() {
+    // Failure.
+    var request = { body: { field: "" }};
+    var formValidator = form(validate("field").notNull());
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "" }};
+    var formValidator = form(validate("field").notNull("!!! %s !!!"));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "win" }};
+    var formValidator = form(validate("field").notNull());
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
+  'validate : isNull': function() {
+    // Failure.
+    var request = { body: { field: "fail" }};
+    var formValidator = form(validate("field").isNull());
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid characters");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "fail" }};
+    var formValidator = form(validate("field").isNull("!!! %s !!!"));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "" }};
+    var formValidator = form(validate("field").isNull());
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
 
 
 
