@@ -300,7 +300,7 @@ module.exports = {
     formValidator(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "Invalid characters");
+    assert.equal(request.form.errors[0], "String is whitespace");
 
     // Failure w/ custom message.
     var request = { body: { field: "  \t" }};
@@ -311,7 +311,7 @@ module.exports = {
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
-    var request = { body: { field: "" }};
+    var request = { body: { field: "win" }};
     var formValidator = form(validate("field").notEmpty());
     formValidator(request, {});
     assert.equal(request.form.errors, undefined);
