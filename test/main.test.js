@@ -718,6 +718,7 @@ module.exports = {
   },
 
   'filter : entityEncode': function() {
+    // NOTE: single quotes are not encoded
     var request = { body: { field: "&\"<>hello!" }};
     var formValidator = form(filter("field").entityEncode());
     formValidator(request, {});
