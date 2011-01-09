@@ -518,6 +518,12 @@ module.exports = {
     var formValidator = form(validate("field").required());
     formValidator(request, {});
     assert.equal(request.form.errors, undefined);
-  }
+  },
 
+  'filter : trim': function() {
+    var request = { body: { field: "  value   \t" }};
+    var formValidator = form(filter("field").trim());
+    formValidator(request, {});
+    assert.equal(request.body.field, "value");
+  }
 };
