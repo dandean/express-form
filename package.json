@@ -1,0 +1,22 @@
+{
+  "name": "express-form",
+  "description": "Form validation and data filtering for Express",
+  "version": "0.1.0",
+  "homepage": "https://github.com/dandean/express-form",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/dandean/express-form.git"
+  },
+  "author": "Dan Dean <me@dandean.com> (http://dandean.com)",
+  "keywords" : ["form", "validator", "validation", "express"],
+  "dependencies": { "validator": ">= 0.1.2" },
+  "main" : "./index",
+  "directories": { "lib": "./lib" },
+  "bugs" : { "web" : "http://github.com/dandean/express-form/issues" },
+  "scripts": { "test": "expresso" },
+  "engines": { "node": ">=0.2.2" },
+  "licenses" : [{
+    "type" : "MIT",
+    "url" : "http://github.com/chriso/node-validator/raw/master/LICENSE"
+  }]
+}
