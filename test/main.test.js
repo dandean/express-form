@@ -607,6 +607,129 @@ module.exports = {
     assert.ok(isNaN(request.body.field));
   },
 
+  'filter : toBoolean': function() {
+    // Truthy values
+    var request = { body: {
+      field1: true,
+      field2: "true",
+      field3: "hi",
+      field4: new Date(),
+      field5: 50,
+      field6: -1,
+      field7: "3000"
+    }};
+    var formValidator = form(
+      filter("field1").toBoolean(),
+      filter("field2").toBoolean(),
+      filter("field3").toBoolean(),
+      filter("field4").toBoolean(),
+      filter("field5").toBoolean(),
+      filter("field6").toBoolean(),
+      filter("field7").toBoolean()
+    );
+    formValidator(request, {});
+    "1234567".split("").forEach(function(i) {
+      var name = "field" + i;
+      assert.strictEqual(typeof request.body[name], "boolean");
+      assert.strictEqual(request.body[name], true);
+    });
+
+    // Falsy values
+    var request = { body: {
+      field1: false,
+      field2: "false",
+      field3: null,
+      field4: undefined,
+      field5: 0,
+      field6: "0",
+      field7: ""
+    }};
+    var formValidator = form(
+      filter("field1").toBoolean(),
+      filter("field2").toBoolean(),
+      filter("field3").toBoolean(),
+      filter("field4").toBoolean(),
+      filter("field5").toBoolean(),
+      filter("field6").toBoolean(),
+      filter("field7").toBoolean()
+    );
+    formValidator(request, {});
+    "1234567".split("").forEach(function(i) {
+      var name = "field" + i;
+      assert.strictEqual(typeof request.body[name], "boolean");
+      assert.strictEqual(request.body[name], false);
+    });
+  },
+
+  'filter : toBooleanStrict': function() {
+    // Truthy values
+    var request = { body: {
+      field1: true,
+      field2: "true",
+      field3: 1,
+      field4: "1"
+    }};
+    var formValidator = form(
+      filter("field1").toBooleanStrict(),
+      filter("field2").toBooleanStrict(),
+      filter("field3").toBooleanStrict(),
+      filter("field4").toBooleanStrict()
+    );
+    formValidator(request, {});
+    "1234".split("").forEach(function(i) {
+      var name = "field" + i;
+      assert.strictEqual(typeof request.body[name], "boolean");
+      assert.strictEqual(request.body[name], true);
+    });
+
+    // Falsy values
+    var request = { body: {
+      field1: false,
+      field2: "false",
+      field3: null,
+      field4: undefined,
+      field5: 0,
+      field6: "0",
+      field7: "",
+      field8: new Date(),
+      field9: 50,
+      field0: -1,
+      fielda: "3000"
+    }};
+    var formValidator = form(
+      filter("field1").toBooleanStrict(),
+      filter("field2").toBooleanStrict(),
+      filter("field3").toBooleanStrict(),
+      filter("field4").toBooleanStrict(),
+      filter("field5").toBooleanStrict(),
+      filter("field6").toBooleanStrict(),
+      filter("field7").toBooleanStrict(),
+      filter("field8").toBooleanStrict(),
+      filter("field9").toBooleanStrict(),
+      filter("field0").toBooleanStrict(),
+      filter("fielda").toBooleanStrict()
+    );
+    formValidator(request, {});
+    "1234567890a".split("").forEach(function(i) {
+      var name = "field" + i;
+      assert.strictEqual(typeof request.body[name], "boolean");
+      assert.strictEqual(request.body[name], false);
+    });
+  },
+
+  'filter : entityEncode': function() {
+    var request = { body: { field: "&\"<>hello!" }};
+    var formValidator = form(filter("field").entityEncode());
+    formValidator(request, {});
+    assert.equal(request.body.field, "&amp;&quot;&lt;&gt;hello!");
+  },
+
+  'filter : entityDecode': function() {
+    var request = { body: { field: "&amp;&quot;&lt;&gt;hello!" }};
+    var formValidator = form(filter("field").entityDecode());
+    formValidator(request, {});
+    assert.equal(request.body.field, "&\"<>hello!");
+  },
 
   "": ""
 };
