@@ -521,9 +521,64 @@ module.exports = {
   },
 
   'filter : trim': function() {
-    var request = { body: { field: "  value   \t" }};
+    var request = { body: { field: "\r\n  value   \t" }};
     var formValidator = form(filter("field").trim());
     formValidator(request, {});
     assert.equal(request.body.field, "value");
-  }
+  },
+  
+  'filter : ltrim': function() {
+    var request = { body: { field: "\r\n  value   \t" }};
+    var formValidator = form(filter("field").ltrim());
+    formValidator(request, {});
+    assert.equal(request.body.field, "value   \t");
+  },
+
+  'filter : rtrim': function() {
+    var request = { body: { field: "\r\n  value   \t" }};
+    var formValidator = form(filter("field").rtrim());
+    formValidator(request, {});
+    assert.equal(request.body.field, "\r\n  value");
+  },
+
+  'filter : ifNull': function() {
+    // Replace missing value with "value"
+    var request = { body: {} };
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, "value");
+
+    // Replace empty string with value
+    var request = { body: { field: "" }};
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, "value");
+
+    // Replace NULL with value
+    var request = { body: { field: null }};
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, "value");
+
+    // Replace undefined with value
+    var request = { body: { field: undefined }};
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, "value");
+
+    // DO NOT replace false
+    var request = { body: { field: false }};
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, false);
+
+    // DO NOT replace zero
+    var request = { body: { field: 0 }};
+    var formValidator = form(filter("field").ifNull("value"));
+    formValidator(request, {});
+    assert.equal(request.body.field, 0);
+  },
+
+
+  "": ""
 };
