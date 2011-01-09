@@ -732,5 +732,51 @@ module.exports = {
     assert.equal(request.body.field, "&\"<>hello!");
   },
 
+  'filter : toUpper': function() {
+    var request = { body: { field: "hellö!" }};
+    var formValidator = form(filter("field").toUpper());
+    formValidator(request, {});
+    assert.equal(request.body.field, "HELLÖ!");
+  },
+
+  'filter : toLower': function() {
+    var request = { body: { field: "HELLÖ!" }};
+    var formValidator = form(filter("field").toLower());
+    formValidator(request, {});
+    assert.equal(request.body.field, "hellö!");
+  },
+
+  'filter : truncate': function() {
+    var request = { body: {
+      field1: "1234567890",
+      field2: "",
+      field3: "123",
+      field4: "123456",
+      field5: "1234567890"
+    }};
+    var formValidator = form(
+      filter("field1").truncate(3), // ...
+      filter("field2").truncate(3), // EMPTY
+      filter("field3").truncate(3), // 123
+      filter("field4").truncate(5), // 12...
+      filter("field5").truncate(7)  // 1234...
+    );
+    formValidator(request, {});
+    assert.equal(request.body.field1, "...");
+    assert.equal(request.body.field2, "");
+    assert.equal(request.body.field3, "123");
+    assert.equal(request.body.field4, "12...");
+    assert.equal(request.body.field5, "1234...");
+  },
+
+  'filter : custom': function() {
+    var request = { body: { field: "value!" }};
+    var formValidator = form(filter("field").custom(function(value) {
+      return "!!!";
+    }));
+    formValidator(request, {});
+    assert.equal(request.body.field, "!!!");
+  },
+
   "": ""
 };
