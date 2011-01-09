@@ -21,7 +21,7 @@ Packaging
 ---------
 
 * Add package.json
-* Include expresson and node-validator as internal packages, not external deps
+* Include expresso and node-validator as internal packages, not external deps
 
 
 Other
