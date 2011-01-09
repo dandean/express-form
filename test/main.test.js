@@ -583,7 +583,14 @@ module.exports = {
     var request = { body: { field: "50.01" }};
     var formValidator = form(filter("field").toFloat());
     formValidator(request, {});
+    assert.ok(typeof request.body.field == "number");
     assert.equal(request.body.field, 50.01);
+
+    var request = { body: { field: "fail" }};
+    var formValidator = form(filter("field").toFloat());
+    formValidator(request, {});
+    assert.ok(typeof request.body.field == "number");
+    assert.ok(isNaN(request.body.field));
   },
 
   "": ""
