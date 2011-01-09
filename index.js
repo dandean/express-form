@@ -1,1 +1,1 @@
-module.exports = require("./lib/connect-validation");
+module.exports = require("./lib/form");
