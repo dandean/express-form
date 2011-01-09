@@ -520,6 +520,44 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
+  'validation : custom': function() {
+    // Failure.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").custom(function(value) {
+      throw new Error();
+    }));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Invalid field");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").custom(function(value) {
+      throw new Error();
+    }, "!!! %s !!!"));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Failure w/ custom message from internal error.
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").custom(function(value) {
+      throw new Error("Radical %s");
+    }));
+    formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Radical field");
+
+    // Success
+    var request = { body: { field: "value" }};
+    var formValidator = form(validate("field").custom(function(validate) {}));
+    formValidator(request, {});
+    assert.equal(request.form.errors, undefined);
+  },
+
   'filter : trim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
     var formValidator = form(filter("field").trim());

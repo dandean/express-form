@@ -5,7 +5,6 @@ TODO
 Features
 --------
 
-* Custom validators
 * Filter and Validator extensions
 * minLength and maxLength validators
 * form.isValid
