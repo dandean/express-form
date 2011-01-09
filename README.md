@@ -15,8 +15,9 @@
 
       function(req, res) {
         // Now we can inspect the errors!  
-        if (req.form.errors) {
+        if (!req.form.isValid) {
           // Handle errors
+          console.log(req.form.errors);
         }
       }
     );  

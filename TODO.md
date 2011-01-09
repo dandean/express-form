@@ -5,11 +5,7 @@ TODO
 Features
 --------
 
-* Filter and Validator extensions
 * minLength and maxLength validators
-* form.isValid
-* form.addFilter()
-* form.addValidator()
 
 
 Testing and Compatibility
@@ -31,4 +27,4 @@ Packaging
 Other
 -----
 
-* fix object.isUndefined to also just compare to undefined
+* Add notes on how to extend the filters and validators
