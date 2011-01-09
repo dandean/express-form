@@ -6,6 +6,7 @@ Features
 --------
 
 * minLength and maxLength validators
+* configurability
 
 
 Testing and Compatibility
