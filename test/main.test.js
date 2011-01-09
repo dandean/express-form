@@ -579,6 +579,12 @@ module.exports = {
     assert.equal(request.body.field, 0);
   },
 
+  'filter : toFloat': function() {
+    var request = { body: { field: "50.01" }};
+    var formValidator = form(filter("field").toFloat());
+    formValidator(request, {});
+    assert.equal(request.body.field, 50.01);
+  },
 
   "": ""
 };
