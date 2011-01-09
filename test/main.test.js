@@ -496,51 +496,26 @@ module.exports = {
     assert.equal(request.form.errors, undefined);
   },
 
-  'validate : length/len': function() {
-    // length(5);
-    // length(5, "Too short");
-    // length(5, 5);
-    // length(5, 5, "Too short");
-    
+  'validation : required': function() {
     // Failure.
-    var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").length(6));
+    var request = { body: {} };
+    var formValidator = form(validate("field").required());
     formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "Value is too short");
+    assert.equal(request.form.errors[0], "Missing value");
 
-    // Failure w/ custom message.
+    // Failure w/ placeholder value and custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").length(6, "!!! %s !!!"));
+    var formValidator = form(validate("field").required("value", "!!! %s !!!"));
     formValidator(request, {});
+    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
-    var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").length(5));
-    formValidator(request, {});
-    assert.equal(request.form.errors, undefined);
-  },
-
-  'validation : required': function() {
-    // Failure
-    var request = { body: {}};
-    var formValidator = form(validate("a_number").required());
-    formValidator(request, {});
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "a_number is a required field");
-    
-    // Failure w/ custom message and placeholder value.
-    var request = { body: { a_number: "a_value" }};
-    var formValidator = form(validate("a_number").required("a_value", "!!! %s !!!"));
-    formValidator(request, {});
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "!!! a_number !!!");
-
-    // Success
-    var request = { body: { a_number: "5000" }};
-    var formValidator = form(validate("a_number").required("a_value", "!!! %s !!!"));
+    var request = { body: { field: "5000.00" }};
+    var formValidator = form(validate("field").required());
     formValidator(request, {});
     assert.equal(request.form.errors, undefined);
   }
