@@ -17,17 +17,9 @@ Features
 Testing and Compatibility
 -------------------------
 
-* Test with Express
 * Formidable and Connect-Form
 * express-contrib/flash
 * auto-locals
-
-
-Packaging
----------
-
-* Add package.json
-* Include expresso and node-validator as internal packages, not external deps
 
 
 Other
