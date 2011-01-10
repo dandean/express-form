@@ -108,7 +108,7 @@ Custom Filters
 
 The `validate` property of the module creates a validator object tied to a specific field.
 
-    validate(fieldname);
+    validate(fieldname[, label]);
     // -> Validator
 
 The API is chainable, so you can keep calling validators one after the other:
