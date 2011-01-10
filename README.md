@@ -42,7 +42,7 @@ Documentation:
 
 ### Module
 
-The Express Form **module** returns an Express [Route Middleware](http://expressjs.com/guide.html#Route-Middleware) function. You specify filtering and validation by passing filters and validators as arguments to the main function. For example:
+The Express Form **module** returns an Express [Route Middleware](http://expressjs.com/guide.html#Route-Middleware) function. You specify filtering and validation by passing filters and validators as arguments to the main module function. For example:
 
     var form = require("express-form");
 
@@ -59,16 +59,16 @@ The Express Form **module** returns an Express [Route Middleware](http://express
 
 ### Filters
 
-The `filter` property of the module generates a filter object for filtering form field data on a specific field.
+The `filter` property of the module creates a filter object tied to a specific field.
 
     filter(fieldname);
     // -> Filter
 
 The API is chainable, so you can keep calling filters one after the other:
 
-    filter("username").trim().toLower().truncate(5);
+    filter("username").trim().toLower().truncate(5)
 
-#### Available Filters
+#### Filter API:
 
 Type Coercion
 
@@ -83,17 +83,14 @@ HTML Encoding for `& " < >`
     entityEncode() -> encodes HTML entities
     entityDecode() -> decodes HTML entities 
 
-Whitespace
-
-    ltrim(chars)
-    trim(chars)
-    rtrim(chars)
-    
 String Transformations
 
-    toLower() and toLowerCase()
-    toUpper() and toUpperCase()
-    truncate(length)
+    trim(chars)                 -> `chars` defaults to whitespace
+    ltrim(chars)
+    rtrim(chars)
+    toLower() / toLowerCase()
+    toUpper() / toUpperCase()
+    truncate(length)            -> Chops value at (length - 3), appends `...`
     
 Custom Filters
 
@@ -126,4 +123,4 @@ Installation:
 Credits
 -------
 
-Internally Express Form use smany of the validation and filtering functionlity provided by Chris O'Hara's [node-validator](https://github.com/chriso/node-validator). This may change at a later date though.
+Currently, Express Form uses many of the validation and filtering functions provided by Chris O'Hara's [node-validator](https://github.com/chriso/node-validator).
