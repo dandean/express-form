@@ -40,10 +40,90 @@ Usage:
 Documentation:
 --------------
 
-Coming soon! For now, just read the source.
+### Module
+
+The Express Form **module** returns an Express [Route Middleware](http://expressjs.com/guide.html#Route-Middleware) function. You specify filtering and validation by passing filters and validators as arguments to the main function. For example:
+
+    var form = require("express-form");
+
+    app.post('/user',
+      
+      // Express Form Route Middleware: trims whitespace off of the `username` field.
+      form(form.filter("username").trim()),
+      
+      // standard Express handler
+      function(req, res) {
+        // ...
+      }
+    );
+
+### Filters
+
+The `filter` property of the module generates a filter object for filtering form field data on a specific field.
+
+    filter(fieldname);
+    // -> Filter
+
+The API is chainable, so you can keep calling filters one after the other:
+
+    filter("username").trim().toLower().truncate(5);
+
+#### Available Filters
+
+Type Coercion
+
+    toFloat()           -> Number
+    toInt()             -> Number, rounded down
+    toBoolean()         -> Boolean from truthy and falsy values
+    toBooleanStrict()   -> Only true, "true", 1 and "1" are `true`
+    ifNull(replacement) -> "", undefined and null get replaced by `replacement`
+    
+HTML Encoding for `& " < >`
+
+    entityEncode() -> encodes HTML entities
+    entityDecode() -> decodes HTML entities 
+
+Whitespace
+
+    ltrim(chars)
+    trim(chars)
+    rtrim(chars)
+    
+String Transformations
+
+    toLower() and toLowerCase()
+    toUpper() and toUpperCase()
+    truncate(length)
+    
+Custom Filters
+
+    custom(function)
+    
+    // Example
+    // If the `name` field has a value of "hello there",
+    // this would transform it to "hello-there". 
+    filter("name").custom(function(value) {
+      return value.replace(/\s+/g, "-");
+    });
+    
+
+### Validators
+
+Documentation coming soon
+
+
+### http.ServerRequest.prototype.form
+
+Documentation coming soon
 
 
 Installation:
 -------------
 
     npm install express-form
+
+
+Credits
+-------
+
+Internally Express Form use smany of the validation and filtering functionlity provided by Chris O'Hara's [node-validator](https://github.com/chriso/node-validator). This may change at a later date though.
