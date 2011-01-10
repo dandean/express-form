@@ -106,12 +106,45 @@ Custom Filters
 
 ### Validators
 
-Documentation coming soon
+The `validate` property of the module creates a validator object tied to a specific field.
 
+    validate(fieldname);
+    // -> Validator
+
+The API is chainable, so you can keep calling validators one after the other:
+
+    validate("username").required().isAlphanumeric()
+
+#### Validator API:
+
+**Validation messages**: each validator has its own default validation message. These can easily be overridden at runtime by passing a custom validation message to the validator. The custom message is always the **last** argument passed to the validator.
+
+Use "%s" in the message to have the field name or label printed in the message:
+
+    validate("username").required()
+    // -> "Missing field"
+    
+    validate("username").required("%s is a required field.")
+    // -> "username is a required field."
+    
+    validate("username", "Username").required("%s is a required field.")
+    // -> "Username is a required field."
+
+**More documentation coming soon**
 
 ### http.ServerRequest.prototype.form
 
-Documentation coming soon
+Express Form adds a `form` object with various properties to the request.
+
+    isValid -> Boolean
+    errors  -> Array or undefined
+    
+    // Example request handler:
+    function(req, res) {
+      if (req.isValid == false) {
+        console.log(req.errors);
+      }
+    }
 
 
 Installation:
