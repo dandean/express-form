@@ -26,3 +26,4 @@ Other
 -----
 
 * Add notes on how to extend the filters and validators
+* Change node-validator toUppercase/toLowercase to use standard JS caps: toUpper**C**ase, toLower**C**ase.

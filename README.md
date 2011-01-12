@@ -48,7 +48,8 @@ The Express Form **module** returns an Express [Route Middleware](http://express
 
     app.post('/user',
       
-      // Express Form Route Middleware: trims whitespace off of the `username` field.
+      // Express Form Route Middleware: trims whitespace off of
+      // the `username` field.
       form(form.filter("username").trim()),
       
       // standard Express handler
@@ -57,6 +58,7 @@ The Express Form **module** returns an Express [Route Middleware](http://express
       }
     );
 
+
 ### Filters
 
 The `filter` property of the module creates a filter object tied to a specific field.
@@ -64,44 +66,61 @@ The `filter` property of the module creates a filter object tied to a specific f
     filter(fieldname);
     // -> Filter
 
-The API is chainable, so you can keep calling filters one after the other:
+The API is chainable, so you can keep calling filter methods one after the other:
 
     filter("username").trim().toLower().truncate(5)
+
 
 #### Filter API:
 
 Type Coercion
 
     toFloat()           -> Number
+
     toInt()             -> Number, rounded down
+
     toBoolean()         -> Boolean from truthy and falsy values
+
     toBooleanStrict()   -> Only true, "true", 1 and "1" are `true`
+
     ifNull(replacement) -> "", undefined and null get replaced by `replacement`
     
+
 HTML Encoding for `& " < >`
 
     entityEncode() -> encodes HTML entities
+
     entityDecode() -> decodes HTML entities 
+
 
 String Transformations
 
     trim(chars)                 -> `chars` defaults to whitespace
+
     ltrim(chars)
+
     rtrim(chars)
+
     toLower() / toLowerCase()
+
     toUpper() / toUpperCase()
+
     truncate(length)            -> Chops value at (length - 3), appends `...`
     
+
 Custom Filters
 
     custom(function)
     
-    // Example
-    // If the `name` field has a value of "hello there",
-    // this would transform it to "hello-there". 
-    filter("name").custom(function(value) {
-      return value.replace(/\s+/g, "-");
-    });
+        Filters the field value using custom logic.
+    
+        Example:
+        If the `name` field has a value of "hello there", this would
+        transform it to "hello-there". 
+
+        filter("name").custom(function(value) {
+          return value.replace(/\s+/g, "-");
+        });
     
 
 ### Validators
@@ -111,9 +130,10 @@ The `validate` property of the module creates a validator object tied to a speci
     validate(fieldname[, label]);
     // -> Validator
 
-The API is chainable, so you can keep calling validators one after the other:
+The API is chainable, so you can keep calling validator methods one after the other:
 
     validate("username").required().isAlphanumeric()
+
 
 #### Validator API:
 
@@ -130,7 +150,123 @@ Use "%s" in the message to have the field name or label printed in the message:
     validate("username", "Username").required("%s is a required field.")
     // -> "Username is a required field."
 
-**More documentation coming soon**
+
+**Validation Methods**
+
+*By Regular Expressions*
+
+    regex(pattern[, modifiers[, message]])
+    - pattern (RegExp|String): RegExp (with flags) or String pattern.
+    - modifiers (String): Optional, and only if `pattern` is a String.
+    - message (String): Optional validation message.
+    
+        alias: is
+
+        Checks that the value matches the given regular expression.
+    
+        Example:
+
+        validate("username").is("[a-z]", "i", "Only letters are valid in %s")
+        validate("username").is(/[a-z]/i, "Only letters are valid in %s")
+    
+    
+    notRegex(pattern[, modifiers[, message]])
+    - pattern (RegExp|String): RegExp (with flags) or String pattern.
+    - modifiers (String): Optional, and only if `pattern` is a String.
+    - message (String): Optional validation message.
+    
+        alias: not
+
+        Checks that the value does NOT match the given regular expression.
+    
+        Example:
+
+        validate("username").not("[a-z]", "i", "Letters are not valid in %s")
+        validate("username").not(/[a-z]/i, "Letters are not valid in %s")
+
+
+*By Type*
+
+    isNumeric([message])
+
+    isInt([message])
+
+    isDecimal([message])
+
+    isFloat([message])
+
+    notNull([message])
+
+    isNull([message])
+
+
+*By Format*
+
+    isEmail([message])
+
+    isUrl([message])
+
+    isIP([message])
+
+    isAlpha([message])
+
+    isAlphanumeric([message])
+
+    isLowercase([message])
+
+    isUppercase([message])
+
+
+*By Content*
+
+    notEmpty([message])
+    
+        Checks if the value is not just whitespace.
+        
+
+    equals( value [, message] )
+    - value (String): A value that should match the field value.
+        
+        Compares the field to `value`.
+    
+        Example:
+        validate("username").equals("admin")
+
+
+    contains(value[, message])
+    - value (String): The value to test for.
+        
+        Checks if the field contains `value`.
+        
+
+    notContains(string[, message])
+    - value (String): A value that should not exist in the field.
+
+        Checks if the field does NOT contain `value`.
+
+
+*Other*
+    
+    required([message])
+    
+        Checks that the field is present in form data, and has a value.
+        
+        
+    custom(function[, message])
+    - function (Function): A custom validation function.
+    
+        Validates the field using a custom validation function. If the function
+        throws, and `message` is not provided, the thrown error message is used.
+        
+        Example:
+        
+        validate("username").custom(function(value) {
+            if (value !== "admin") {
+                throw new Error("%s must be 'admin'.");
+            }
+        });
+
+
 
 ### http.ServerRequest.prototype.form
 
