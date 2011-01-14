@@ -6,131 +6,113 @@ module.exports = {
   'validate : isEmail': function() {
     // Skip validating empty values
     var request = { body: {} };
-    var formValidator = form(validate("field").isEmail());
-    formValidator(request, {});
+    form(validate("field").isEmail())(request, {});
     assert.equal(request.form.errors, undefined);
     
     // Failure.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isEmail());
-    formValidator(request, {});
+    form(validate("field").isEmail())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid email");
 
     // Failure w/ custom message.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isEmail("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isEmail("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "me@dandean.com" }};
-    var formValidator = form(validate("field").isEmail());
-    formValidator(request, {});
+    form(validate("field").isEmail())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isUrl': function() {
     // Failure.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isUrl());
-    formValidator(request, {});
+    form(validate("field").isUrl())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid URL");
 
     // Failure w/ custom message.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isUrl("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isUrl("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "http://www.google.com" }};
-    var formValidator = form(validate("field").isUrl());
-    formValidator(request, {});
+    form(validate("field").isUrl())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isIP': function() {
     // Failure.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isIP());
-    formValidator(request, {});
+    form(validate("field").isIP())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid IP");
 
     // Failure w/ custom message.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isIP("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isIP("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "0.0.0.0" }};
-    var formValidator = form(validate("field").isIP());
-    formValidator(request, {});
+    form(validate("field").isIP())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isAlpha': function() {
     // Failure.
     var request = { body: { field: "123456" }};
-    var formValidator = form(validate("field").isAlpha());
-    formValidator(request, {});
+    form(validate("field").isAlpha())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "123456" }};
-    var formValidator = form(validate("field").isAlpha("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isAlpha("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "abcde" }};
-    var formValidator = form(validate("field").isAlpha());
-    formValidator(request, {});
+    form(validate("field").isAlpha())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isAlphanumeric': function() {
     // Failure.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isAlphanumeric());
-    formValidator(request, {});
+    form(validate("field").isAlphanumeric())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isAlphanumeric("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isAlphanumeric("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "abc123" }};
-    var formValidator = form(validate("field").isAlphanumeric());
-    formValidator(request, {});
+    form(validate("field").isAlphanumeric())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isNumeric': function() {
     // Failure.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isNumeric());
-    formValidator(request, {});
+    form(validate("field").isNumeric())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid number");
 
     // Failure w/ custom message.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isNumeric("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isNumeric("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
@@ -142,242 +124,211 @@ module.exports = {
       positive: "+123456.45",
       padded: "000045.343"
     }};
-    var formValidator = form(
+    form(
       validate("integer").isNumeric(),
       validate("floating").isNumeric(),
       validate("negative").isNumeric(),
       validate("positive").isNumeric(),
       validate("padded").isNumeric()
-    );
-    formValidator(request, {});
+    )(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isInt': function() {
     // Failure.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isInt());
-    formValidator(request, {});
+    form(validate("field").isInt())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid integer");
 
     // Failure w/ custom message.
     var request = { body: { field: "------" }};
-    var formValidator = form(validate("field").isInt("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isInt("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "50" }};
-    var formValidator = form(validate("field").isInt());
-    formValidator(request, {});
+    form(validate("field").isInt())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isLowercase': function() {
     // Failure.
     var request = { body: { field: "FAIL" }};
-    var formValidator = form(validate("field").isLowercase());
-    formValidator(request, {});
+    form(validate("field").isLowercase())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "FAIL" }};
-    var formValidator = form(validate("field").isInt("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isInt("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "win" }};
-    var formValidator = form(validate("field").isLowercase());
-    formValidator(request, {});
+    form(validate("field").isLowercase())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isUppercase': function() {
     // Failure.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isUppercase());
-    formValidator(request, {});
+    form(validate("field").isUppercase())(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isUppercase("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isUppercase("!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "WIN" }};
-    var formValidator = form(validate("field").isUppercase());
-    formValidator(request, {});
+    form(validate("field").isUppercase())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isFloat': function() {
     // Failure.
     var request = { body: { field: "5000" }};
-    var formValidator = form(validate("field").isFloat());
-    formValidator(request, {});
+    form(validate("field").isFloat())(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid decimal");
 
     // Failure w/ custom message.
     var request = { body: { field: "5000" }};
-    var formValidator = form(validate("field").isFloat("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isFloat("!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "5000.00" }};
-    var formValidator = form(validate("field").isFloat());
-    formValidator(request, {});
+    form(validate("field").isFloat())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : notNull': function() {
     // Failure.
     var request = { body: { field: "" }};
-    var formValidator = form(validate("field").notNull());
-    formValidator(request, {});
+    form(validate("field").notNull())(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "" }};
-    var formValidator = form(validate("field").notNull("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notNull("!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "win" }};
-    var formValidator = form(validate("field").notNull());
-    formValidator(request, {});
+    form(validate("field").notNull())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : isNull': function() {
     // Failure.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isNull());
-    formValidator(request, {});
+    form(validate("field").isNull())(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "fail" }};
-    var formValidator = form(validate("field").isNull("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").isNull("!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "" }};
-    var formValidator = form(validate("field").isNull());
-    formValidator(request, {});
+    form(validate("field").isNull())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : notEmpty': function() {
     // Failure.
     var request = { body: { field: "  \t" }};
-    var formValidator = form(validate("field").notEmpty());
-    formValidator(request, {});
+    form(validate("field").notEmpty())(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "String is whitespace");
 
     // Failure w/ custom message.
     var request = { body: { field: "  \t" }};
-    var formValidator = form(validate("field").notEmpty("!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notEmpty("!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "win" }};
-    var formValidator = form(validate("field").notEmpty());
-    formValidator(request, {});
+    form(validate("field").notEmpty())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : equals': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").equals("other"));
-    formValidator(request, {});
+    form(validate("field").equals("other"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Not equal");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").equals("other", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").equals("other", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").equals("value"));
-    formValidator(request, {});
+    form(validate("field").equals("value"))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : contains': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").contains("other"));
-    formValidator(request, {});
+    form(validate("field").contains("other"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").contains("other", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").contains("other", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").contains("alu"));
-    formValidator(request, {});
+    form(validate("field").contains("alu"))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validate : notContains': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notContains("alu"));
-    formValidator(request, {});
+    form(validate("field").notContains("alu"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notContains("alu", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notContains("alu", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notContains("win"));
-    formValidator(request, {});
+    form(validate("field").notContains("win"))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
@@ -391,50 +342,43 @@ module.exports = {
 
     // Failure: RegExp with default args
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex(/^\d+$/));
-    formValidator(request, {});
+    form(validate("field").regex(/^\d+$/))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure: RegExp with custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex(/^\d+$/, "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").regex(/^\d+$/, "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure: String with default args.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex("^\d+$"));
-    formValidator(request, {});
+    form(validate("field").regex("^\d+$"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Success: String with modifiers
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex("^VALUE$", "i"));
-    formValidator(request, {});
+    form(validate("field").regex("^VALUE$", "i"))(request, {});
     assert.equal(request.form.errors, undefined);
 
     // Failure: String with custom message
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex("^\d+$", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").regex("^\d+$", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure: String with modifiers and custom message
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex("^\d+$", "i", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").regex("^\d+$", "i", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").regex(/^value$/));
-    formValidator(request, {});
+    form(validate("field").regex(/^value$/))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
@@ -448,155 +392,135 @@ module.exports = {
 
     // Failure: RegExp with default args
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex(/^value$/));
-    formValidator(request, {});
+    form(validate("field").notRegex(/^value$/))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Failure: RegExp with custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex(/^value$/, "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notRegex(/^value$/, "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure: String with default args.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex("^value$"));
-    formValidator(request, {});
+    form(validate("field").notRegex("^value$"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid characters");
 
     // Success: String with modifiers
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex("^win$", "i"));
-    formValidator(request, {});
+    form(validate("field").notRegex("^win$", "i"))(request, {});
     assert.equal(request.form.errors, undefined);
 
     // Failure: String with custom message
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex("^value$", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notRegex("^value$", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure: String with modifiers and custom message
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex("^value$", "i", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").notRegex("^value$", "i", "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").notRegex(/^win$/));
-    formValidator(request, {});
+    form(validate("field").notRegex(/^win$/))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validation : minLength': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").minLength(10));
-    formValidator(request, {});
+    form(validate("field").minLength(10))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Too short");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").minLength(10, "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").minLength(10, "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").minLength(1));
-    formValidator(request, {});
+    form(validate("field").minLength(1))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validation : maxLength': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").maxLength(1));
-    formValidator(request, {});
+    form(validate("field").maxLength(1))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Too long");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").maxLength(1, "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").maxLength(1, "!!! %s !!!"))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").maxLength(5));
-    formValidator(request, {});
+    form(validate("field").maxLength(5))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validation : required': function() {
     // Failure.
     var request = { body: {} };
-    var formValidator = form(validate("field").required());
-    formValidator(request, {});
+    form(validate("field").required())(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Missing value");
 
     // Failure w/ placeholder value and custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").required("value", "!!! %s !!!"));
-    formValidator(request, {});
+    form(validate("field").required("value", "!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "5000.00" }};
-    var formValidator = form(validate("field").required());
-    formValidator(request, {});
+    form(validate("field").required())(request, {});
     assert.equal(request.form.errors, undefined);
   },
 
   'validation : custom': function() {
     // Failure.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").custom(function(value) {
+    form(validate("field").custom(function(value) {
       throw new Error();
-    }));
-    formValidator(request, {});
+    }))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Invalid field");
 
     // Failure w/ custom message.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").custom(function(value) {
+    form(validate("field").custom(function(value) {
       throw new Error();
-    }, "!!! %s !!!"));
-    formValidator(request, {});
+    }, "!!! %s !!!"))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure w/ custom message from internal error.
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").custom(function(value) {
+    form(validate("field").custom(function(value) {
       throw new Error("Radical %s");
-    }));
-    formValidator(request, {});
+    }))(request, {});
     assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Radical field");
 
     // Success
     var request = { body: { field: "value" }};
-    var formValidator = form(validate("field").custom(function(validate) {}));
-    formValidator(request, {});
+    form(validate("field").custom(function(validate) {}))(request, {});
     assert.equal(request.form.errors, undefined);
   },
 };

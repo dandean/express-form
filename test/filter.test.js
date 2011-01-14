@@ -5,87 +5,74 @@ var assert = require("assert"),
 module.exports = {
   'filter : trim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
-    var formValidator = form(filter("field").trim());
-    formValidator(request, {});
+    form(filter("field").trim())(request, {});
     assert.equal(request.body.field, "value");
   },
   
   'filter : ltrim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
-    var formValidator = form(filter("field").ltrim());
-    formValidator(request, {});
+    form(filter("field").ltrim())(request, {});
     assert.equal(request.body.field, "value   \t");
   },
 
   'filter : rtrim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
-    var formValidator = form(filter("field").rtrim());
-    formValidator(request, {});
+    form(filter("field").rtrim())(request, {});
     assert.equal(request.body.field, "\r\n  value");
   },
 
   'filter : ifNull': function() {
     // Replace missing value with "value"
     var request = { body: {} };
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, "value");
 
     // Replace empty string with value
     var request = { body: { field: "" }};
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, "value");
 
     // Replace NULL with value
     var request = { body: { field: null }};
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, "value");
 
     // Replace undefined with value
     var request = { body: { field: undefined }};
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, "value");
 
     // DO NOT replace false
     var request = { body: { field: false }};
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, false);
 
     // DO NOT replace zero
     var request = { body: { field: 0 }};
-    var formValidator = form(filter("field").ifNull("value"));
-    formValidator(request, {});
+    form(filter("field").ifNull("value"))(request, {});
     assert.equal(request.body.field, 0);
   },
 
   'filter : toFloat': function() {
     var request = { body: { field: "50.01" }};
-    var formValidator = form(filter("field").toFloat());
-    formValidator(request, {});
+    form(filter("field").toFloat())(request, {});
     assert.ok(typeof request.body.field == "number");
     assert.equal(request.body.field, 50.01);
 
     var request = { body: { field: "fail" }};
-    var formValidator = form(filter("field").toFloat());
-    formValidator(request, {});
+    form(filter("field").toFloat())(request, {});
     assert.ok(typeof request.body.field == "number");
     assert.ok(isNaN(request.body.field));
   },
 
   'filter : toInt': function() {
     var request = { body: { field: "50.01" }};
-    var formValidator = form(filter("field").toInt());
-    formValidator(request, {});
+    form(filter("field").toInt())(request, {});
     assert.ok(typeof request.body.field == "number");
     assert.equal(request.body.field, 50);
 
     var request = { body: { field: "fail" }};
-    var formValidator = form(filter("field").toInt());
-    formValidator(request, {});
+    form(filter("field").toInt())(request, {});
     assert.ok(typeof request.body.field == "number");
     assert.ok(isNaN(request.body.field));
   },
@@ -101,7 +88,7 @@ module.exports = {
       field6: -1,
       field7: "3000"
     }};
-    var formValidator = form(
+    form(
       filter("field1").toBoolean(),
       filter("field2").toBoolean(),
       filter("field3").toBoolean(),
@@ -109,8 +96,7 @@ module.exports = {
       filter("field5").toBoolean(),
       filter("field6").toBoolean(),
       filter("field7").toBoolean()
-    );
-    formValidator(request, {});
+    )(request, {});
     "1234567".split("").forEach(function(i) {
       var name = "field" + i;
       assert.strictEqual(typeof request.body[name], "boolean");
@@ -127,7 +113,7 @@ module.exports = {
       field6: "0",
       field7: ""
     }};
-    var formValidator = form(
+    form(
       filter("field1").toBoolean(),
       filter("field2").toBoolean(),
       filter("field3").toBoolean(),
@@ -135,8 +121,7 @@ module.exports = {
       filter("field5").toBoolean(),
       filter("field6").toBoolean(),
       filter("field7").toBoolean()
-    );
-    formValidator(request, {});
+    )(request, {});
     "1234567".split("").forEach(function(i) {
       var name = "field" + i;
       assert.strictEqual(typeof request.body[name], "boolean");
@@ -152,13 +137,12 @@ module.exports = {
       field3: 1,
       field4: "1"
     }};
-    var formValidator = form(
+    form(
       filter("field1").toBooleanStrict(),
       filter("field2").toBooleanStrict(),
       filter("field3").toBooleanStrict(),
       filter("field4").toBooleanStrict()
-    );
-    formValidator(request, {});
+    )(request, {});
     "1234".split("").forEach(function(i) {
       var name = "field" + i;
       assert.strictEqual(typeof request.body[name], "boolean");
@@ -179,7 +163,7 @@ module.exports = {
       field0: -1,
       fielda: "3000"
     }};
-    var formValidator = form(
+    form(
       filter("field1").toBooleanStrict(),
       filter("field2").toBooleanStrict(),
       filter("field3").toBooleanStrict(),
@@ -191,8 +175,7 @@ module.exports = {
       filter("field9").toBooleanStrict(),
       filter("field0").toBooleanStrict(),
       filter("fielda").toBooleanStrict()
-    );
-    formValidator(request, {});
+    )(request, {});
     "1234567890a".split("").forEach(function(i) {
       var name = "field" + i;
       assert.strictEqual(typeof request.body[name], "boolean");
@@ -203,29 +186,25 @@ module.exports = {
   'filter : entityEncode': function() {
     // NOTE: single quotes are not encoded
     var request = { body: { field: "&\"<>hello!" }};
-    var formValidator = form(filter("field").entityEncode());
-    formValidator(request, {});
+    form(filter("field").entityEncode())(request, {});
     assert.equal(request.body.field, "&amp;&quot;&lt;&gt;hello!");
   },
 
   'filter : entityDecode': function() {
     var request = { body: { field: "&amp;&quot;&lt;&gt;hello!" }};
-    var formValidator = form(filter("field").entityDecode());
-    formValidator(request, {});
+    form(filter("field").entityDecode())(request, {});
     assert.equal(request.body.field, "&\"<>hello!");
   },
 
   'filter : toUpper': function() {
     var request = { body: { field: "hellö!" }};
-    var formValidator = form(filter("field").toUpper());
-    formValidator(request, {});
+    form(filter("field").toUpper())(request, {});
     assert.equal(request.body.field, "HELLÖ!");
   },
 
   'filter : toLower': function() {
     var request = { body: { field: "HELLÖ!" }};
-    var formValidator = form(filter("field").toLower());
-    formValidator(request, {});
+    form(filter("field").toLower())(request, {});
     assert.equal(request.body.field, "hellö!");
   },
 
@@ -237,14 +216,13 @@ module.exports = {
       field4: "123456",
       field5: "1234567890"
     }};
-    var formValidator = form(
+    form(
       filter("field1").truncate(3), // ...
       filter("field2").truncate(3), // EMPTY
       filter("field3").truncate(3), // 123
       filter("field4").truncate(5), // 12...
       filter("field5").truncate(7)  // 1234...
-    );
-    formValidator(request, {});
+    )(request, {});
     assert.equal(request.body.field1, "...");
     assert.equal(request.body.field2, "");
     assert.equal(request.body.field3, "123");
@@ -254,10 +232,9 @@ module.exports = {
 
   'filter : custom': function() {
     var request = { body: { field: "value!" }};
-    var formValidator = form(filter("field").custom(function(value) {
+    form(filter("field").custom(function(value) {
       return "!!!";
-    }));
-    formValidator(request, {});
+    }))(request, {});
     assert.equal(request.body.field, "!!!");
   }
 
