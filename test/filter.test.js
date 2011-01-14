@@ -6,75 +6,75 @@ module.exports = {
   'filter : trim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
     form(filter("field").trim())(request, {});
-    assert.equal(request.body.field, "value");
+    assert.equal(request.form.field, "value");
   },
   
   'filter : ltrim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
     form(filter("field").ltrim())(request, {});
-    assert.equal(request.body.field, "value   \t");
+    assert.equal(request.form.field, "value   \t");
   },
 
   'filter : rtrim': function() {
     var request = { body: { field: "\r\n  value   \t" }};
     form(filter("field").rtrim())(request, {});
-    assert.equal(request.body.field, "\r\n  value");
+    assert.equal(request.form.field, "\r\n  value");
   },
 
   'filter : ifNull': function() {
     // Replace missing value with "value"
     var request = { body: {} };
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, "value");
+    assert.equal(request.form.field, "value");
 
     // Replace empty string with value
     var request = { body: { field: "" }};
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, "value");
+    assert.equal(request.form.field, "value");
 
     // Replace NULL with value
     var request = { body: { field: null }};
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, "value");
+    assert.equal(request.form.field, "value");
 
     // Replace undefined with value
     var request = { body: { field: undefined }};
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, "value");
+    assert.equal(request.form.field, "value");
 
     // DO NOT replace false
     var request = { body: { field: false }};
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, false);
+    assert.equal(request.form.field, false);
 
     // DO NOT replace zero
     var request = { body: { field: 0 }};
     form(filter("field").ifNull("value"))(request, {});
-    assert.equal(request.body.field, 0);
+    assert.equal(request.form.field, 0);
   },
 
   'filter : toFloat': function() {
     var request = { body: { field: "50.01" }};
     form(filter("field").toFloat())(request, {});
-    assert.ok(typeof request.body.field == "number");
-    assert.equal(request.body.field, 50.01);
+    assert.ok(typeof request.form.field == "number");
+    assert.equal(request.form.field, 50.01);
 
     var request = { body: { field: "fail" }};
     form(filter("field").toFloat())(request, {});
-    assert.ok(typeof request.body.field == "number");
-    assert.ok(isNaN(request.body.field));
+    assert.ok(typeof request.form.field == "number");
+    assert.ok(isNaN(request.form.field));
   },
 
   'filter : toInt': function() {
     var request = { body: { field: "50.01" }};
     form(filter("field").toInt())(request, {});
-    assert.ok(typeof request.body.field == "number");
-    assert.equal(request.body.field, 50);
+    assert.ok(typeof request.form.field == "number");
+    assert.equal(request.form.field, 50);
 
     var request = { body: { field: "fail" }};
     form(filter("field").toInt())(request, {});
-    assert.ok(typeof request.body.field == "number");
-    assert.ok(isNaN(request.body.field));
+    assert.ok(typeof request.form.field == "number");
+    assert.ok(isNaN(request.form.field));
   },
 
   'filter : toBoolean': function() {
@@ -99,8 +99,8 @@ module.exports = {
     )(request, {});
     "1234567".split("").forEach(function(i) {
       var name = "field" + i;
-      assert.strictEqual(typeof request.body[name], "boolean");
-      assert.strictEqual(request.body[name], true);
+      assert.strictEqual(typeof request.form[name], "boolean");
+      assert.strictEqual(request.form[name], true);
     });
 
     // Falsy values
@@ -124,8 +124,8 @@ module.exports = {
     )(request, {});
     "1234567".split("").forEach(function(i) {
       var name = "field" + i;
-      assert.strictEqual(typeof request.body[name], "boolean");
-      assert.strictEqual(request.body[name], false);
+      assert.strictEqual(typeof request.form[name], "boolean");
+      assert.strictEqual(request.form[name], false);
     });
   },
 
@@ -145,8 +145,8 @@ module.exports = {
     )(request, {});
     "1234".split("").forEach(function(i) {
       var name = "field" + i;
-      assert.strictEqual(typeof request.body[name], "boolean");
-      assert.strictEqual(request.body[name], true);
+      assert.strictEqual(typeof request.form[name], "boolean");
+      assert.strictEqual(request.form[name], true);
     });
 
     // Falsy values
@@ -178,8 +178,8 @@ module.exports = {
     )(request, {});
     "1234567890a".split("").forEach(function(i) {
       var name = "field" + i;
-      assert.strictEqual(typeof request.body[name], "boolean");
-      assert.strictEqual(request.body[name], false);
+      assert.strictEqual(typeof request.form[name], "boolean");
+      assert.strictEqual(request.form[name], false);
     });
   },
 
@@ -187,25 +187,25 @@ module.exports = {
     // NOTE: single quotes are not encoded
     var request = { body: { field: "&\"<>hello!" }};
     form(filter("field").entityEncode())(request, {});
-    assert.equal(request.body.field, "&amp;&quot;&lt;&gt;hello!");
+    assert.equal(request.form.field, "&amp;&quot;&lt;&gt;hello!");
   },
 
   'filter : entityDecode': function() {
     var request = { body: { field: "&amp;&quot;&lt;&gt;hello!" }};
     form(filter("field").entityDecode())(request, {});
-    assert.equal(request.body.field, "&\"<>hello!");
+    assert.equal(request.form.field, "&\"<>hello!");
   },
 
   'filter : toUpper': function() {
     var request = { body: { field: "hellö!" }};
     form(filter("field").toUpper())(request, {});
-    assert.equal(request.body.field, "HELLÖ!");
+    assert.equal(request.form.field, "HELLÖ!");
   },
 
   'filter : toLower': function() {
     var request = { body: { field: "HELLÖ!" }};
     form(filter("field").toLower())(request, {});
-    assert.equal(request.body.field, "hellö!");
+    assert.equal(request.form.field, "hellö!");
   },
 
   'filter : truncate': function() {
@@ -223,11 +223,11 @@ module.exports = {
       filter("field4").truncate(5), // 12...
       filter("field5").truncate(7)  // 1234...
     )(request, {});
-    assert.equal(request.body.field1, "...");
-    assert.equal(request.body.field2, "");
-    assert.equal(request.body.field3, "123");
-    assert.equal(request.body.field4, "12...");
-    assert.equal(request.body.field5, "1234...");
+    assert.equal(request.form.field1, "...");
+    assert.equal(request.form.field2, "");
+    assert.equal(request.form.field3, "123");
+    assert.equal(request.form.field4, "12...");
+    assert.equal(request.form.field5, "1234...");
   },
 
   'filter : custom': function() {
@@ -235,7 +235,7 @@ module.exports = {
     form(filter("field").custom(function(value) {
       return "!!!";
     }))(request, {});
-    assert.equal(request.body.field, "!!!");
+    assert.equal(request.form.field, "!!!");
   }
 
 };

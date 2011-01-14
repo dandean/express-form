@@ -5,20 +5,22 @@ TODO
 Features
 --------
 
-* configurability
-* Should data get pulled from all sources into form object? If so, precedence?
-  * body.id --> req.form.id
-  * url?page=5 --> req.form.page
-  * url/:page --> req.form.page
-* req.form could contain all filtered/merged data, leaving originals in place
-* how does this work with req.param() ?
-  
-  References
-  
-  * Zend Filter Input
-  * Rails
-  * django
-  * .Net
+### request.form values
+
+Precedence: url param -> query param -> request body
+
+TODO: check how this compares to other solutions: rails, zend, django, .net.
+TODO: how does this work with request.param() ? May need to override that so
+      to ensure that it pulls form request.form.
+
+### Configurability
+
+What configuration options should be available?
+
+* Debugging?
+* Default message overrides?
+* Connection to express-contrib/flash?
+* Auto-local each of the form props?
 
 
 Testing and Compatibility
