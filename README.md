@@ -27,12 +27,16 @@ Usage:
         validate("password").required().is(/^[0-9]+$/)
       ),
       
-      // Express request handler now gets filtered and validated body
+      // Express request-handler now receives filtered and validated data
       function(req, res){
-        // Now we can inspect the errors!  
         if (!req.form.isValid) {
           // Handle errors
           console.log(req.form.errors);
+
+        } else {
+          // Or, use filtered form data from the form object:
+          console.log("Username:", req.form.username);
+          console.log("Password:", req.form.password);
         }
       }
     );
