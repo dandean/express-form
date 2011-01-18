@@ -16,5 +16,16 @@ module.exports = {
 
     request.form.isValid = false;
     assert.strictEqual(request.form.isValid, true);
+  },
+  
+  'form : configure : dataSources': function() {
+    form.configure({ dataSources: 'other' });
+
+    var request = { other: { field: "me@dandean.com" }};
+    form(validate("field").isEmail())(request, {});
+    assert.strictEqual(request.form.isValid, true);
+    assert.equal(request.form.field, "me@dandean.com");
+
+    form.configure({ dataSources: ['body', "query", "params"] });
   }
 };
