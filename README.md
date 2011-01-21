@@ -229,12 +229,16 @@ Use "%s" in the message to have the field name or label printed in the message:
         
 
     equals( value [, message] )
-    - value (String): A value that should match the field value.
+    - value (String): A value that should match the field value OR a fieldname
+                      token to match another field, ie, `field::password`.
         
         Compares the field to `value`.
     
         Example:
         validate("username").equals("admin")
+
+        validate("password").is(/^\w{6,20}$/)
+        validate("password_confirmation").equals("field::password")
 
 
     contains(value[, message])
