@@ -292,6 +292,28 @@ module.exports = {
     var request = { body: { field: "value" }};
     form(validate("field").equals("value"))(request, {});
     assert.equal(request.form.errors, undefined);
+
+
+    // Failure
+    var request = {
+      body: {
+        field1: "value1",
+        field2: "value2"
+      }
+    };
+    form(validate("field1").equals("field::field2"))(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "Not equal");
+
+    // Success
+    var request = {
+      body: {
+        field1: "value",
+        field2: "value"
+      }
+    };
+    form(validate("field1").equals("field::field2"))(request, {});
+    assert.equal(request.form.errors, undefined);
   },
 
   'validate : contains': function() {
@@ -522,5 +544,5 @@ module.exports = {
     var request = { body: { field: "value" }};
     form(validate("field").custom(function(validate) {}))(request, {});
     assert.equal(request.form.errors, undefined);
-  },
+  }
 };
