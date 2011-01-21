@@ -5,14 +5,6 @@ TODO
 Features
 --------
 
-### request.form values
-
-Precedence: url param -> query param -> request body
-
-TODO: check how this compares to other solutions: rails, zend, django, .net.
-TODO: how does this work with request.param() ? May need to override that so
-      to ensure that it pulls form request.form.
-
 ### Configurability
 
 What configuration options should be available?
