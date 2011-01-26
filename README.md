@@ -146,13 +146,13 @@ The API is chainable, so you can keep calling validator methods one after the ot
 Use "%s" in the message to have the field name or label printed in the message:
 
     validate("username").required()
-    // -> "Missing field"
+    // -> "username is required"
     
-    validate("username").required("%s is a required field.")
-    // -> "username is a required field."
+    validate("username").required("What is your %s?")
+    // -> "What is your username?"
     
-    validate("username", "Username").required("%s is a required field.")
-    // -> "Username is a required field."
+    validate("username", "Username").required("What is your %s?")
+    // -> "What is your Username?"
 
 
 **Validation Methods**
