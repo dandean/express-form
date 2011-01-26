@@ -281,12 +281,20 @@ Use "%s" in the message to have the field name or label printed in the message:
 Express Form adds a `form` object with various properties to the request.
 
     isValid -> Boolean
-    errors  -> Array or undefined
+
+    errors  -> Array
     
-    // Example request handler:
+    getErrors(name) -> Array
+    - fieldname (String): The name of the field
+    
+        Gets all errors for the field with the given name.
+
+    Example request handler:
+    
     function(req, res) {
       if (req.isValid == false) {
         console.log(req.errors);
+        console.log(req.getErrors("username"))
       }
     }
 

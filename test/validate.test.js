@@ -7,7 +7,7 @@ module.exports = {
     // Skip validating empty values
     var request = { body: {} };
     form(validate("field").isEmail())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
     
     // Failure.
     var request = { body: { field: "fail" }};
@@ -24,7 +24,7 @@ module.exports = {
     // Success
     var request = { body: { field: "me@dandean.com" }};
     form(validate("field").isEmail())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isUrl': function() {
@@ -43,7 +43,7 @@ module.exports = {
     // Success
     var request = { body: { field: "http://www.google.com" }};
     form(validate("field").isUrl())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isIP': function() {
@@ -62,7 +62,7 @@ module.exports = {
     // Success
     var request = { body: { field: "0.0.0.0" }};
     form(validate("field").isIP())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isAlpha': function() {
@@ -81,7 +81,7 @@ module.exports = {
     // Success
     var request = { body: { field: "abcde" }};
     form(validate("field").isAlpha())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isAlphanumeric': function() {
@@ -100,7 +100,7 @@ module.exports = {
     // Success
     var request = { body: { field: "abc123" }};
     form(validate("field").isAlphanumeric())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isNumeric': function() {
@@ -131,7 +131,7 @@ module.exports = {
       validate("positive").isNumeric(),
       validate("padded").isNumeric()
     )(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isInt': function() {
@@ -150,7 +150,7 @@ module.exports = {
     // Success
     var request = { body: { field: "50" }};
     form(validate("field").isInt())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isLowercase': function() {
@@ -169,7 +169,7 @@ module.exports = {
     // Success
     var request = { body: { field: "win" }};
     form(validate("field").isLowercase())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isUppercase': function() {
@@ -188,7 +188,7 @@ module.exports = {
     // Success
     var request = { body: { field: "WIN" }};
     form(validate("field").isUppercase())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isFloat': function() {
@@ -209,7 +209,7 @@ module.exports = {
     // Success
     var request = { body: { field: "5000.00" }};
     form(validate("field").isFloat())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : notNull': function() {
@@ -230,7 +230,7 @@ module.exports = {
     // Success
     var request = { body: { field: "win" }};
     form(validate("field").notNull())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : isNull': function() {
@@ -251,7 +251,7 @@ module.exports = {
     // Success
     var request = { body: { field: "" }};
     form(validate("field").isNull())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : notEmpty': function() {
@@ -272,7 +272,7 @@ module.exports = {
     // Success
     var request = { body: { field: "win" }};
     form(validate("field").notEmpty())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : equals': function() {
@@ -291,7 +291,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").equals("value"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
 
 
     // Failure
@@ -313,7 +313,7 @@ module.exports = {
       }
     };
     form(validate("field1").equals("field::field2"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : contains': function() {
@@ -332,7 +332,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").contains("alu"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : notContains': function() {
@@ -351,7 +351,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").notContains("win"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : regex/is': function() {
@@ -383,7 +383,7 @@ module.exports = {
     // Success: String with modifiers
     var request = { body: { field: "value" }};
     form(validate("field").regex("^VALUE$", "i"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
 
     // Failure: String with custom message
     var request = { body: { field: "value" }};
@@ -401,7 +401,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").regex(/^value$/))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : notRegex/not': function() {
@@ -433,7 +433,7 @@ module.exports = {
     // Success: String with modifiers
     var request = { body: { field: "value" }};
     form(validate("field").notRegex("^win$", "i"))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
 
     // Failure: String with custom message
     var request = { body: { field: "value" }};
@@ -450,7 +450,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").notRegex(/^win$/))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validation : minLength': function() {
@@ -469,7 +469,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").minLength(1))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validation : maxLength': function() {
@@ -488,7 +488,7 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").maxLength(5))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validation : required': function() {
@@ -509,7 +509,7 @@ module.exports = {
     // Success
     var request = { body: { field: "5000.00" }};
     form(validate("field").required())(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validation : custom': function() {
@@ -543,6 +543,6 @@ module.exports = {
     // Success
     var request = { body: { field: "value" }};
     form(validate("field").custom(function(validate) {}))(request, {});
-    assert.equal(request.form.errors, undefined);
+    assert.equal(request.form.errors.length, 0);
   }
 };

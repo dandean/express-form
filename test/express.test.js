@@ -24,7 +24,7 @@ module.exports = {
         assert.strictEqual(req.form.username, "dandean");
         assert.strictEqual(req.form.password, "12345");
         assert.strictEqual(req.form.isValid, true);
-        assert.strictEqual(req.form.errors, undefined);
+        assert.strictEqual(req.form.errors.length, 0);
         res.send(JSON.stringify(req.form));
       }
     );    
