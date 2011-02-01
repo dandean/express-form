@@ -5,7 +5,7 @@ Usage:
 
     var form = require("express-form"),
         filter = form.filter,
-        validate = form.validate;
+        validate = form.validator;
 
     var app = express.createServer();
 
