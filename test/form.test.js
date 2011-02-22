@@ -45,6 +45,20 @@ module.exports = {
     assert.equal(request.form.getErrors("field1").length, 1);
     assert.equal(request.form.getErrors("field2").length, 2);
     assert.equal(request.form.getErrors("field3").length, 3);
+    error_object = request.form.getErrors();
+    expected_error_object = {
+      field1: [ 'field1 is not an email address' ]
+    , field2: 
+       [ 'field2 is not an email address'
+       , 'field2 is not a URL'
+       ]
+    , field3: 
+       [ 'field3 is not an email address'
+       , 'field3 is not a URL'
+       , 'field3 is not an IP address'
+       ]
+    }
+    assert.deepEqual(error_object, expected_error_object);
   },
   
   'form : configure : dataSources': function() {
