@@ -1,7 +1,7 @@
 var assert = require("assert"),
     form = require("../index"),
     filter = form.filter,
-    validate = form.validator,
+    validate = form.validate,
     express = require("express"),
     app = express.createServer();
 
