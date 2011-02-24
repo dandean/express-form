@@ -18,7 +18,6 @@ Testing and Compatibility
 -------------------------
 
 * Formidable and Connect-Form
-* express-contrib/flash
 * Do not assume data is a String. May need to drop `node-validator` dependency.
 
 
