@@ -1,6 +1,6 @@
 var assert = require("assert"),
     form = require("../index"),
-    validate = form.validator;
+    validate = form.validate;
 
 module.exports = {
   'validate : isEmail': function() {
@@ -195,14 +195,12 @@ module.exports = {
     // Failure.
     var request = { body: { field: "5000" }};
     form(validate("field").isFloat())(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "field is not a decimal");
 
     // Failure w/ custom message.
     var request = { body: { field: "5000" }};
     form(validate("field").isFloat("!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
@@ -212,60 +210,16 @@ module.exports = {
     assert.equal(request.form.errors.length, 0);
   },
 
-  'validate : notNull': function() {
-    // Failure.
-    var request = { body: { field: "" }};
-    form(validate("field").notNull())(request, {});
-    assert.ok(Array.isArray(request.form.errors));
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "field is null");
-
-    // Failure w/ custom message.
-    var request = { body: { field: "" }};
-    form(validate("field").notNull("!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "!!! field !!!");
-
-    // Success
-    var request = { body: { field: "win" }};
-    form(validate("field").notNull())(request, {});
-    assert.equal(request.form.errors.length, 0);
-  },
-
-  'validate : isNull': function() {
-    // Failure.
-    var request = { body: { field: "fail" }};
-    form(validate("field").isNull())(request, {});
-    assert.ok(Array.isArray(request.form.errors));
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "field is not null");
-
-    // Failure w/ custom message.
-    var request = { body: { field: "fail" }};
-    form(validate("field").isNull("!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
-    assert.equal(request.form.errors.length, 1);
-    assert.equal(request.form.errors[0], "!!! field !!!");
-
-    // Success
-    var request = { body: { field: "" }};
-    form(validate("field").isNull())(request, {});
-    assert.equal(request.form.errors.length, 0);
-  },
-
   'validate : notEmpty': function() {
     // Failure.
     var request = { body: { field: "  \t" }};
     form(validate("field").notEmpty())(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "field has no value or is only whitespace");
 
     // Failure w/ custom message.
     var request = { body: { field: "  \t" }};
     form(validate("field").notEmpty("!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
@@ -495,20 +449,33 @@ module.exports = {
     // Failure.
     var request = { body: {} };
     form(validate("field").required())(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "field is required");
 
     // Failure w/ placeholder value and custom message.
     var request = { body: { field: "value" }};
     form(validate("field").required("value", "!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Success
     var request = { body: { field: "5000.00" }};
     form(validate("field").required())(request, {});
+    assert.equal(request.form.errors.length, 0);
+    
+    // Non-required fields with no value should not trigger errors
+    // Success
+    var request = { body: {
+      fieldEmpty: "",
+      fieldUndefined: undefined,
+      fieldNull: null
+    }};
+    form(
+      validate("fieldEmpty").is(/whatever/),
+      validate("fieldUndefined").is(/whatever/),
+      validate("fieldNull").is(/whatever/),
+      validate("fieldMissing").is(/whatever/)
+    )(request, {});
     assert.equal(request.form.errors.length, 0);
   },
 
@@ -518,7 +485,6 @@ module.exports = {
     form(validate("field").custom(function(value) {
       throw new Error();
     }))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "field is invalid");
 
@@ -527,7 +493,6 @@ module.exports = {
     form(validate("field").custom(function(value) {
       throw new Error();
     }, "!!! %s !!!"))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "!!! field !!!");
 
@@ -536,7 +501,6 @@ module.exports = {
     form(validate("field").custom(function(value) {
       throw new Error("Radical %s");
     }))(request, {});
-    assert.ok(Array.isArray(request.form.errors));
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Radical field");
 
@@ -544,5 +508,12 @@ module.exports = {
     var request = { body: { field: "value" }};
     form(validate("field").custom(function(validate) {}))(request, {});
     assert.equal(request.form.errors.length, 0);
+  },
+  
+  "validation : request.form property-pollution": function() {
+    var request = { body: { }};
+    form()(request, {});
+    assert.equal(request.form.errors.length, 0);
+    assert.equal('{}', JSON.stringify(request.form));
   }
 };

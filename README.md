@@ -5,7 +5,7 @@ Usage:
 
     var form = require("express-form"),
         filter = form.filter,
-        validate = form.validator;
+        validate = form.validate;
 
     var app = express.createServer();
 
@@ -24,7 +24,9 @@ Usage:
         filter("username").trim(),
         validate("username").required().is(/^[a-z]+$/),
         filter("password").trim(),
-        validate("password").required().is(/^[0-9]+$/)
+        validate("password").required().is(/^[0-9]+$/),
+        filter("email").trim(),
+        validate("email").isEmail()
       ),
       
       // Express request-handler now receives filtered and validated data
@@ -37,6 +39,7 @@ Usage:
           // Or, use filtered form data from the form object:
           console.log("Username:", req.form.username);
           console.log("Password:", req.form.password);
+          console.log("Email:", req.form.email);
         }
       }
     );
@@ -199,10 +202,6 @@ Use "%s" in the message to have the field name or label printed in the message:
 
     isFloat([message])
 
-    notNull([message])
-
-    isNull([message])
-
 
 *By Format*
 
@@ -283,6 +282,10 @@ Express Form adds a `form` object with various properties to the request.
     isValid -> Boolean
 
     errors  -> Array
+
+    flashErrors(name) -> undefined
+    
+        Flashes all errors. Configurable, enabled by default.
     
     getErrors(name) -> Array
     - fieldname (String): The name of the field

@@ -1,6 +1,6 @@
 var assert = require("assert"),
     form = require("../index"),
-    validate = form.validator;
+    validate = form.validate;
 
 module.exports = {
   'form : isValid': function() {
