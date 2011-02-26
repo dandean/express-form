@@ -2,8 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8'>
-
-  <title>Express Form for Expressjs</title>
+  <title>{{ page.title }}</title>
 
   <style type="text/css">
     body {
@@ -28,57 +27,14 @@
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
+  <link rel="stylesheet" href="/css/pygments/fruity.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
   <a href="http://github.com/dandean/express-form"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
   <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/dandean/express-form/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/dandean/express-form/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/dandean/express-form">express-form</a>
-      <span class="small">by <a href="http://github.com/dandean">dandean</a></span></h1>
-
-    <div class="description">
-      Form validation and data filtering for Express
-    </div>
-
-    <h2>Dependencies</h2>
-<p>node-validator</p>
-<h2>Install</h2>
-<p>npm install express-form</p>
-<h2>License</h2>
-<p>MIT</p>
-<h2>Authors</h2>
-<p>dandean
-<br/>
-<br/>      </p>
-<h2>Contact</h2>
-<p>Dan Dean
-<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/dandean/express-form/zipball/master">zip</a> or
-      <a href="http://github.com/dandean/express-form/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/dandean/express-form</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/dandean/express-form">dandean/express-form</a>
-    </div>
-
+    {{ content }}
   </div>
 
 <script type="text/javascript">
