@@ -1,5 +1,20 @@
 auto:        auto
 
-markdown: rdiscount
+markdown: kramdown
 pygments: true
 permalink: none
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: true
+  
+  coderay:
+    coderay_wrap: div
+    coderay_line_numbers: inline
+    coderay_line_numbers_start: 1
+    coderay_tab_width: 2
+    coderay_bold_every: 10
+    coderay_css: style

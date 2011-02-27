@@ -2,38 +2,26 @@
 <html>
 <head>
   <meta charset='utf-8'>
-  <title>{{ page.title }}</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #a9d6c9;
-      font-family: Helvetica,Arial,FreeSans;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #562936; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #562936; }
-    h3 { text-align: center; color: #562936; }
-    a { color: #562936; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-  <link rel="stylesheet" href="/css/pygments/fruity.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <title>{{ page.title }} - Express Form for Expressjs</title>
+  <link rel="shortcut icon" href="/img/favicon.ico" />
+  <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="/css/pygments/native.css" type="text/css" media="screen" charset="utf-8">
 </head>
 
 <body>
-  <a href="http://github.com/dandean/express-form"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  <a href="http://github.com/dandean/express-form"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/img/forkme.png" alt="Fork me on GitHub" /></a>
 
   <div id="container">
+    <h1>{{ page.title }}</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/docs">The Basics</a></li>
+        <li><a href="/docs/module.html">Express Form Module</a></li>
+        <li><a href="/docs/validate.html">Validation</a></li>
+        <li><a href="/docs/filter.html">Filtering</a></li>
+      </ul>
+    </nav>
     {{ content }}
   </div>
 
@@ -45,6 +33,16 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 try {
 var pageTracker = _gat._getTracker("UA-21657174-1");
 pageTracker._trackPageview();
-} catch(err) {}</script>
+} catch(err) {}
+
+Array.prototype.slice.call(document.querySelectorAll("span.nx")).forEach(function(el) {
+  var text = el.textContent;
+  if (text.match(/^form|validate|filter$/)) {
+    el.className = "vc";
+  } else if (text.match(/^is|not|reg|noRegex|required|trim|isEmail$/)) {
+    el.className = "bp";
+  }
+});
+</script>
 </body>
 </html>

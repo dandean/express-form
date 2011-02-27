@@ -1,0 +1,124 @@
+body {
+  margin-top: 1.0em;
+  background-color: #a9d6c9;
+  font-family: Helvetica,Arial,FreeSans;
+  color: #000000;
+}
+  h1, h2, h3 {
+    font-family: Helvetica,Arial,FreeSans;
+    color: #562936;
+  }
+    h1 {
+      font-size: 3.8em;
+      margin-bottom: 3px;
+    }
+      h1 .small {
+        font-size: 0.4em;
+      }
+    h2 {
+      font-size: 1.5em;
+    }
+    h3 {
+      font-size: 1.3em;
+    }
+      h2 + h3 {
+        margin-top: -0.5em !important;
+      }
+  a {
+    color: #562936;
+  }
+  pre {   
+    font-family: Menlo, monospace;
+    font-size: 12px;
+    background-color: hsl(21, 20%, 14%);
+    color: #BDAE9D;
+    padding: 10px;
+    -webkit-border-radius: 4px;
+    line-height: 1.5;
+  }
+  code {
+    font-family: Menlo, monospace;
+  }
+  hr {
+    border: 0;
+    width: 80%;
+    border-bottom: 1px solid #aaa;
+  }
+
+#container {
+  margin: 0 auto;
+  width: 1200px;
+}
+  nav {
+    margin: 1em 0 2em 0;
+  }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: -webkit-box;
+    }
+      nav ul li {
+        margin: 0 1em 0 0;
+      }
+    
+    div.doc {
+      padding: 0 0 0 51%;
+    }
+      div.article {
+        position: relative;
+      }
+        div.article > div.highlight {
+          position: absolute;
+          left: -612px;
+          top: 0;
+          width: 100%;
+        }
+          div.article > div.highlight > pre {
+            margin-top: 1px;
+          }
+        div.article > p:first-child {
+          color: hsl(343, 35%, 25%);
+          font-weight: bold;
+        }
+        div.article > p:first-child + ul {
+          font-size: 0.9em;
+          margin-top: -1em !important;
+          padding-left: 25px;
+        }
+          div.article > p:first-child + ul > li > code:first-of-type {
+            font-weight: bold;
+          }
+        div.article > p:first-child + ul + p {
+          border-top: 1px dotted #fff;
+          margin-top: 1em;
+          padding-top: 1em;
+        }
+        div.article p:last-of-type:not(:first-child) {
+          border-bottom: 1px dotted #000;
+          padding-bottom: 1em;
+        }
+      h2#validation-methods {
+        margin-top: 100px;
+      }
+      div.doc h3 {
+        margin-top: 2em;
+      }
+
+
+  .description {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    font-style: italic;
+  }
+  .download {
+    float: right;
+  }
+    .download p {
+      margin: 0;
+    }
+  .footer {
+    text-align:center;
+    padding-top:30px; font-style: italic;
+  }
