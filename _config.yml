@@ -1,5 +1,3 @@
-auto:        auto
-
 markdown: kramdown
 pygments: true
 permalink: none
