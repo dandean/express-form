@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Form Module - Express Form for Expressjs</title>
+  <link rel="shortcut icon" href="/img/favicon.ico" />
+  <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="/css/pygments/native.css" type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body>
+  <a href="http://github.com/dandean/express-form"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/img/forkme.png" alt="Fork me on GitHub" /></a>
+
+  <div id="container">
+    <h1>Form Module</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/docs">The Basics</a></li>
+        <li><a href="/docs/module.html">Express Form Module</a></li>
+        <li><a href="/docs/validate.html">Validation</a></li>
+        <li><a href="/docs/filter.html">Filtering</a></li>
+      </ul>
+    </nav>
+    <div class="doc">
+  <div class="article">
+    <p><code>form( processors ... ) -&gt; Function(req, res)</code></p>
+
+    <ul>
+      <li><code>processors</code> (<code>Filter|Validator</code>): N number of form.filters and form.validators.</li>
+    </ul>
+
+    <p>The Express Form <strong>module</strong> returns an Express
+<a href="http://expressjs.com/guide.html#Route-Middleware">Route Middleware</a> function.
+You specify filtering and validation by passing filters and validators as
+arguments to the main module function.</p>
+
+    <div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;express-form&quot;</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span>
+  
+  <span class="c1">// Express Form Route Middleware...</span>
+  <span class="nx">form</span><span class="p">(</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">).</span><span class="nx">trim</span><span class="p">(),</span>
+    <span class="nx">form</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">).</span><span class="nx">trim</span><span class="p">()</span>
+  <span class="p">),</span>
+  
+  <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+  </div>
+
+  <h2 id="configuration">Configuration</h2>
+
+  <p>Express Form has various configuration options, but aims for sensible defaults
+for a typical Express application.</p>
+
+  <div class="article">
+    <p><code>form.configure(options) -&gt; self</code></p>
+
+    <ul>
+      <li><code>options</code> (<code>Object</code>): An object with configuration options.</li>
+    </ul>
+  </div>
+
+  <h3 id="options">Options:</h3>
+
+  <p><code>flashErrors</code> (<code>Boolean</code>): If validation errors should be automatically passed
+to Express&rsquo; <code>flash()</code> method. Default: <code>true</code>.</p>
+
+  <p><code>autoLocals</code> (<code>Boolean</code>): If field values from Express&rsquo; <code>request.body</code> should be
+passed into Express&rsquo; <code>response.locals</code> object. This is helpful when a form is
+invalid an you want to repopulate the form elements with their submitted values.
+Default: <code>true</code>.</p>
+
+  <p>Note: if a field name dash-separated, the name used for the locals object will
+be in camelCase.</p>
+
+  <p><code>dataSources</code> (<code>Array</code>): An array of Express request properties to use as data
+sources when filtering and validating data. Default: <code>["body", "query", "params"]</code>.</p>
+</div>
+
+  </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-21657174-1");
+pageTracker._trackPageview();
+} catch(err) {}
+
+Array.prototype.slice.call(document.querySelectorAll("span.nx")).forEach(function(el) {
+  var text = el.textContent;
+  if (text.match(/^form|validate|filter$/)) {
+    el.className = "vc";
+  } else if (text.match(/^is|not|reg|noRegex|required|trim|isEmail$/)) {
+    el.className = "bp";
+  }
+});
+</script>
+</body>
+</html>
