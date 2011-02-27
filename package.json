@@ -1,8 +1,8 @@
 {
   "name": "express-form",
   "description": "Form validation and data filtering for Express",
-  "version": "0.5.0",
-  "homepage": "https://github.com/dandean/express-form",
+  "version": "0.5.1",
+  "homepage": "http://dandean.github.com/express-form",
   "repository": {
     "type": "git",
     "url": "http://github.com/dandean/express-form.git"
