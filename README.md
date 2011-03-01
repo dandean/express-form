@@ -12,7 +12,7 @@ configure your app.js like this:
     });
 NOTE: You need to set locale before app.use(app.router)
 
-Currently, Only English and Japanse are supported.
+Currently, only English and Japanse are supported.
 Please fork and add translations.
 
 Express Form provides data filtering and validation as route middleware to your Express applications.
