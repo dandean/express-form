@@ -519,7 +519,10 @@ module.exports = {
 
   "validation : complex properties": function() {
     var request = { body: { field: { inner: "value" }}};
-    form(validate("field[inner]").required())(request, {});
-    assert.equal(request.form.errors.length, 0);
+    form(
+      validate("field[inner]").required().equals("value"),
+      validate("field[inner]").required().equals("fail")
+    )(request, {});
+    assert.equal(request.form.errors.length, 1);
   }
 };
