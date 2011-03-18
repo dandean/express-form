@@ -515,5 +515,11 @@ module.exports = {
     form()(request, {});
     assert.equal(request.form.errors.length, 0);
     assert.equal('{}', JSON.stringify(request.form));
+  },
+
+  "validation : complex properties": function() {
+    var request = { body: { field: { inner: "value" }}};
+    form(validate("field[inner]").required())(request, {});
+    assert.equal(request.form.errors.length, 0);
   }
 };
