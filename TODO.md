@@ -11,7 +11,6 @@ What configuration options should be available?
 
 * Debugging?
 * Default message overrides?
-* Connection to express-contrib/flash?
 
 
 Testing and Compatibility
@@ -24,6 +23,6 @@ Testing and Compatibility
 Other
 -----
 
+* **Async validation (for databases, etc)**
 * Add notes on how to extend the filters and validators
 * Change node-validator toUppercase/toLowercase to use standard JS caps: toUpper**C**ase, toLower**C**ase.
-* Document autoLocals configuration.
