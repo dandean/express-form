@@ -1,7 +1,7 @@
 {
   "name": "express-form",
   "description": "Form validation and data filtering for Express",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "homepage": "http://dandean.github.com/express-form",
   "repository": {
     "type": "git",
@@ -24,6 +24,6 @@
   "engines": { "node": ">=0.2.2" },
   "licenses" : [{
     "type" : "MIT",
-    "url" : "http://github.com/chriso/node-validator/raw/master/LICENSE"
+    "url" : "http://github.com/dandean/express-form/raw/master/LICENSE"
   }]
 }
