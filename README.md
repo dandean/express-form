@@ -1,5 +1,3 @@
-Test.
-
 Express Form provides data filtering and validation as route middleware to your Express applications.
 
 Usage:
