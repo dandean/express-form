@@ -6,7 +6,7 @@ var assert = require("assert"),
     app = express.createServer();
 
 app.configure(function() {
-  app.use(express.bodyDecoder());
+  app.use(express.bodyParser());
   app.use(app.router);
 });
 
