@@ -480,8 +480,10 @@ module.exports = {
   },
 
   'validation : custom': function() {
+    var request;
+
     // Failure.
-    var request = { body: { field: "value" }};
+    request = { body: { field: "value" }};
     form(validate("field").custom(function(value) {
       throw new Error();
     }))(request, {});
@@ -489,7 +491,7 @@ module.exports = {
     assert.equal(request.form.errors[0], "field is invalid");
 
     // Failure w/ custom message.
-    var request = { body: { field: "value" }};
+    request = { body: { field: "value" }};
     form(validate("field").custom(function(value) {
       throw new Error();
     }, "!!! %s !!!"))(request, {});
@@ -497,17 +499,26 @@ module.exports = {
     assert.equal(request.form.errors[0], "!!! field !!!");
 
     // Failure w/ custom message from internal error.
-    var request = { body: { field: "value" }};
+    request = { body: { field: "value" }};
     form(validate("field").custom(function(value) {
       throw new Error("Radical %s");
     }))(request, {});
     assert.equal(request.form.errors.length, 1);
     assert.equal(request.form.errors[0], "Radical field");
-
+    
     // Success
-    var request = { body: { field: "value" }};
-    form(validate("field").custom(function(validate) {}))(request, {});
+    request = { body: { field: "value" }};
+    form(validate("field").custom(function(value) {}))(request, {});
     assert.equal(request.form.errors.length, 0);
+
+    // Pass form data as 2nd argument to custom validators
+    request = { body: { field1: "value1", field2: "value2" }};
+    form(validate("field1").custom(function(value, formData) {
+      assert.equal("value1", value);
+      assert.ok(formData);
+      assert.equal("value1", formData.field1);
+      assert.equal("value2", formData.field2);
+    }))(request, {});
   },
   
   "validation : request.form property-pollution": function() {
