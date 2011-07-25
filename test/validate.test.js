@@ -518,7 +518,9 @@ module.exports = {
       assert.ok(formData);
       assert.equal("value1", formData.field1);
       assert.equal("value2", formData.field2);
+      throw new Error("This is a custom error thrown for %s.");
     }))(request, {});
+    assert.equal(request.form.errors.length, 1);
   },
   
   "validation : request.form property-pollution": function() {
