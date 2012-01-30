@@ -205,6 +205,8 @@ Use "%s" in the message to have the field name or label printed in the message:
 
 *By Format*
 
+    isDate([message])
+
     isEmail([message])
 
     isUrl([message])
