@@ -4,8 +4,7 @@ Usage:
 ------
 
     var form = require("express-form"),
-        filter = form.filter,
-        validate = form.validate;
+        field = form.field;
 
     var app = express.createServer();
 
@@ -21,12 +20,9 @@ Usage:
       
       // Form filter and validation middleware
       form(
-        filter("username").trim(),
-        validate("username").required().is(/^[a-z]+$/),
-        filter("password").trim(),
-        validate("password").required().is(/^[0-9]+$/),
-        filter("email").trim(),
-        validate("email").isEmail()
+        field("username").trim().required().is(/^[a-z]+$/),
+        field("password").trim().required().is(/^[0-9]+$/),
+        field("email").trim().isEmail()
       ),
       
       // Express request-handler now receives filtered and validated data
@@ -57,7 +53,7 @@ The Express Form **module** returns an Express [Route Middleware](http://express
       
       // Express Form Route Middleware: trims whitespace off of
       // the `username` field.
-      form(form.filter("username").trim()),
+      form(form.field("username").trim()),
       
       // standard Express handler
       function(req, res) {
@@ -66,17 +62,23 @@ The Express Form **module** returns an Express [Route Middleware](http://express
     );
 
 
-### Filters
+### Fields
 
-The `filter` property of the module creates a filter object tied to a specific field.
+The `field` property of the module creates a filter/validator object tied to a specific field.
 
-    filter(fieldname);
-    // -> Filter
+    field(fieldname[, label]);
 
-The API is chainable, so you can keep calling filter methods one after the other:
+You can access nested properties with either dot or square-bracket notation.
+    
+    field("post.content").minLength(50),
+    field("post[user][id]").isInt(),
+    field("post.super.nested.property").required()
 
-    filter("username").trim().toLower().truncate(5)
+Simply specifying a property like this, makes sure it exists. So, even if `req.body.post` was undefined, `req.form.post.content` would be defined. This helps avoid any unwanted errors in your code.
 
+The API is chainable, so you can keep calling filter/validator methods one after the other:
+
+    filter("username").trim().toLower().truncate(5).required().isAlphanumeric()
 
 #### Filter API:
 
@@ -114,33 +116,6 @@ String Transformations
 
     truncate(length)            -> Chops value at (length - 3), appends `...`
     
-
-Custom Filters
-
-    custom(function)
-    
-        Filters the field value using custom logic.
-    
-        Example:
-        If the `name` field has a value of "hello there", this would
-        transform it to "hello-there". 
-
-        filter("name").custom(function(value) {
-          return value.replace(/\s+/g, "-");
-        });
-    
-
-### Validators
-
-The `validate` property of the module creates a validator object tied to a specific field.
-
-    validate(fieldname[, label]);
-    // -> Validator
-
-The API is chainable, so you can keep calling validator methods one after the other:
-
-    validate("username").required().isAlphanumeric()
-
 
 #### Validator API:
 
@@ -258,22 +233,54 @@ Use "%s" in the message to have the field name or label printed in the message:
     
         Checks that the field is present in form data, and has a value.
         
-        
+### Array Method
+
+    array()
+        Using the array() flag means that field always gives an array. If the field value is an array, but there is no flag, then the first value in that array is used instead.
+
+        This means that you don't have to worry about unexpected post data that might break your code. Eg/ when you call an array method on what is actually a string.
+
+        field("project.users").array(),
+        // undefined => [], "" => [], "q" => ["q"], ["a", "b"] => ["a", "b"]
+
+        field("project.block"),
+        // project.block: ["a", "b"] => "a". No "array()", so only first value used.
+
+        In addition, any other methods called with the array method, are applied to every value within the array.
+
+        field("post.users").array().toUpper()
+        // post.users: ["one", "two", "three"] => ["ONE", "TWO", "THREE"]
+
+### Custom Methods
+
     custom(function[, message])
-    - function (Function): A custom validation function.
+    - function (Function): A custom filter or validation function.
+
+        This method can be utilised as either a filter or validator method.
+
+        If the function throws an error, then an error is added to the form. (If `message` is not provided, the thrown error message is used.)
+
+        If the function returns a value, then it is considered a filter method, with the field then becoming the returned value.
+
+        If the function returns undefined, then the method has no effect on the field.
     
-        Validates the field using a custom validation function. If the function
-        throws, and `message` is not provided, the thrown error message is used.
+        Examples:
+
+        If the `name` field has a value of "hello there", this would
+        transform it to "hello-there". 
+
+        field("name").custom(function(value) {
+          return value.replace(/\s+/g, "-");
+        });
+
+        Throws an error if `username` field does not have value "admin".
         
-        Example:
-        
-        validate("username").custom(function(value) {
+        field("username").custom(function(value) {
             if (value !== "admin") {
                 throw new Error("%s must be 'admin'.");
             }
         });
-
-
+    
 
 ### http.ServerRequest.prototype.form
 
@@ -286,20 +293,42 @@ Express Form adds a `form` object with various properties to the request.
     flashErrors(name) -> undefined
     
         Flashes all errors. Configurable, enabled by default.
-    
-    getErrors(name) -> Array
+
+    getErrors(name) -> Array or Object if no name given
     - fieldname (String): The name of the field
     
         Gets all errors for the field with the given name.
 
+        You can also call this method with no parameters to get a map of errors for all of the fields.
+
     Example request handler:
     
     function(req, res) {
-      if (req.isValid == false) {
+      if (!req.form.isValid) {
         console.log(req.errors);
-        console.log(req.getErrors("username"))
+        console.log(req.getErrors("username"));
+        console.log(req.getErrors());
       }
     }
+
+### Configuration
+
+Express Form has various configuration options, but aims for sensible defaults for a typical Express application.
+
+    form.configure(options) -> self
+    - options (Object): An object with configuration options.
+
+    flashErrors (Boolean): If validation errors should be automatically passed to Express’ flash() method. Default: true.
+
+    autoLocals (Boolean): If field values from Express’ request.body should be passed into Express’ response.locals object. This is helpful when a form is invalid an you want to repopulate the form elements with their submitted values. Default: true.
+
+    Note: if a field name dash-separated, the name used for the locals object will be in camelCase.
+
+    dataSources (Array): An array of Express request properties to use as data sources when filtering and validating data. Default: ["body", "query", "params"].
+
+    autoTrim (Boolean): If true, all fields will be automatically trimmed. Default: false.
+
+    passThrough (Boolean): If true, all data sources will be merged with `req.form`. Default: false.
 
 
 Installation:
