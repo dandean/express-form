@@ -268,6 +268,27 @@ module.exports = {
     };
     form(validate("field1").equals("field::field2"))(request, {});
     assert.equal(request.form.errors.length, 0);
+
+    // Failure with nested values
+    var request = {
+      body: {
+        field1: { deep: "value1"},
+        field2: { deeper: "value2"}
+      }
+    };
+    form(validate("field1.deep").equals("field::field2[deeper]"))(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "field1.deep does not equal value2");
+
+    // Success with nested values
+    var request = {
+      body: {
+        field1: { deep: "value"},
+        field2: { deeper: "value"}
+      }
+    };
+    form(validate("field1[deep]").equals("field::field2.deeper"))(request, {});
+    assert.equal(request.form.errors.length, 0);
   },
 
   'validate : contains': function() {
