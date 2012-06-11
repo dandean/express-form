@@ -132,7 +132,11 @@ Use "%s" in the message to have the field name or label printed in the message:
     validate("username", "Username").required("What is your %s?")
     // -> "What is your Username?"
 
-
+Use "%v" in the message to have the field value printed in the message:
+    
+    validate("mynumber").required().isNumeric("%v is not a number")
+    // -> "abcd is is not a number"
+    
 **Validation Methods**
 
 *By Regular Expressions*
