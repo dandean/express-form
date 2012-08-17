@@ -1,3 +1,7 @@
+**<span style="color:red;">NOTE:</span> I am no longer maintaining this project. Let me know if you'd like to take it on, and I'll give you publishing rights for it on NPM.**
+
+---
+
 Express Form provides data filtering and validation as route middleware to your Express applications.
 
 Usage:
