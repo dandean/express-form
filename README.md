@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/dandean/express-form.png)](http://travis-ci.org/dandean/express-form)
 **<span style="color:red;">NOTE:</span> I am no longer maintaining this project. Let me know if you'd like to take it on, and I'll give you publishing rights for it on NPM.**
 
 ---
