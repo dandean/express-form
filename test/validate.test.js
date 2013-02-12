@@ -3,6 +3,30 @@ var assert = require("assert"),
     validate = form.validate;
 
 module.exports = {
+  'validate : isDate': function() {
+    // Skip validating empty values
+    var request = { body: {} };
+    form(validate("field").isDate())(request, {});
+    assert.equal(request.form.errors.length, 0);
+
+    // Failure.
+    var request = { body: { field: "fail" }};
+    form(validate("field").isDate())(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "field is not a date");
+
+    // Failure w/ custom message.
+    var request = { body: { field: "fail" }};
+    form(validate("field").isDate("!!! %s !!!"))(request, {});
+    assert.equal(request.form.errors.length, 1);
+    assert.equal(request.form.errors[0], "!!! field !!!");
+
+    // Success
+    var request = { body: { field: "01/29/2012" }};
+    form(validate("field").isDate())(request, {});
+    assert.equal(request.form.errors.length, 0);
+  },
+
   'validate : isEmail': function() {
     // Skip validating empty values
     var request = { body: {} };
