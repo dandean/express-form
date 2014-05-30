@@ -14,7 +14,7 @@
   ],
   "keywords" : ["form", "validator", "validation", "express"],
   "dependencies": {
-    "validator": ">= 0.1.2",
+    "validator": "~0.1.9",
     "object-additions": ">= 0.5.0"
   },
   "main" : "index",
